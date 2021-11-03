@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('accounts', \App\Http\Controllers\AccountController::class);
+
+    Route::resource('transactions', \App\Http\Controllers\TransactionController::class);
+
+    Route::resource('users', \App\Http\Controllers\UserController::class);
 });
